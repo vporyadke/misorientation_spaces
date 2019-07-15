@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <!-- <meta http-equiv='X-UA-Compatible' content='IE=edge'> -->
+    <title>Page Title</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+
+    <div class="container">
+        <h4>
+            Какое то описание
+        </h4>
+        <p>
+            Даны 2 группы <img src="http://latex.codecogs.com/gif.latex?2G,2H" border="0"/>, для
+            <img src="http://latex.codecogs.com/gif.latex?\forall g \in 2G, h \in 2H" border="0"/> нарисуем стереографическую проекцию
+            <img src="http://latex.codecogs.com/gif.latex?\{u \in S^3 : gu = uh\}" border="0"/>
+        </p>
+        <div class="col s10 offset-s1">
+
+            <div class="col s12" id="plot"></div>
+
+            <p>
+                Описание того, что нужно вводить в поля
+            </p>
+            <form method="POST">
+                <div class="col s12"> 
+                    <div class="input-field col s6">
+                        <textarea name="G1" id="G1" cols="40" rows="5" class="materialize-textarea">{{ G1 }}</textarea>
+                        <label for="G1">Группа 2G</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <textarea name="G2" id="G2" cols="40" rows="5" class="materialize-textarea">{{ G2 }}</textarea>
+                        <label for="G2">Группа 2H</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input type="submit" value='submit' class="waves-effect waves-light btn">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        PLOT = document.getElementById('plot');
+
+        var plots = {{ plots }};
+
+        plots.forEach((plot) => {
+            var xs = plot[0], ys = plot[1], zs = plot[2], cs = plot[3], name=plot[4];
+            name = "(" + name[0] + "), (" + name[1] + ")";
+            Plotly.plot(PLOT, [{
+                type: 'scatter3d',
+                mode: 'lines',
+                name: name.toString(),
+                x: xs,
+                y: ys,
+                z: zs,
+                opacity: 1,
+                line: {
+                    width: 6,
+                    color: cs,
+                    reversescale: false
+                }
+            }], {
+                height: 640
+            });
+        })
+
+    </script>
+</body>
+</html>
