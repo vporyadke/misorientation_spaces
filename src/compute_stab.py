@@ -1,6 +1,9 @@
 import numpy as np
 from scipy.linalg import svd
 
+from parse_quaternion import unparse_quaternion
+
+
 def diff_mx(q_a, q_c):
     sa, xa, ya, za = q_a
     sc, xc, yc, zc = q_c
@@ -50,12 +53,12 @@ def make_plot(G1, G2):
         for j, q_2 in enumerate(G2):
             p = _make_plot(q_1, q_2)
             if p is not None:
-                cur_plot = np.array(_make_plot(q_1, q_2, i * len(G2) + j))
-                res.append([
-                    cur_plot[:, 0].tolist(),
-                    cur_plot[:, 1].tolist(),
-                    cur_plot[:, 2].tolist(),
-                    cur_plot[:, 3].tolist(),
-                    [q_1, q_2]
-                ])
+                cur_plot = np.array(_make_plot(q_1, q_2, (i * len(G2) + j) / (len(G1) * len(G2))))
+                res.append({
+                    'xs': cur_plot[:, 0].tolist(),
+                    'ys': cur_plot[:, 1].tolist(),
+                    'zs': cur_plot[:, 2].tolist(),
+                    'cs': cur_plot[:, 3].tolist(),
+                    'name': unparse_quaternion(q_1) + '; ' + unparse_quaternion(q_2)
+                })
     return res

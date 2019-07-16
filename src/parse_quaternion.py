@@ -23,8 +23,5 @@ def parse_quaternion(s):
         float(''.join(x)) for x in res
     ]
 
-def main():
-    print(parse_quaternion('-1+5.4*i+3.0*j'))
-
-if __name__ == "__main__":
-    main()
+def unparse_quaternion(q):
+    return f'{q[0]} + {q[1]} i + {q[2]} j + {q[3]} k'
