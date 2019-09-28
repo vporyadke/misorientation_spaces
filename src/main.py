@@ -1,17 +1,11 @@
 from flask import Flask, render_template, request
 import json
 
-from parse_quaternion import parse_quaternion
+from parse_quaternion import parse_group
 from compute_stab import make_plot
 import config
 
 app = Flask(__name__)
-
-def parse_group(G_str):
-    return [
-        parse_quaternion(q)
-        for q in G_str.split('\n')
-    ]
 
 
 @app.route('/', methods=['GET'])
@@ -26,6 +20,7 @@ def index():
 def get_data():
     G1 = request.form['G1']
     G2 = request.form['G2']
+    print(G1, G2)
     return json.dumps(
         make_plot(
             parse_group(G1), 

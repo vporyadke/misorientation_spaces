@@ -1,27 +1,32 @@
-from pyparsing import Word, alphas, nums, Optional
+import re
+
 
 def parse_quaternion(s):
-    s.replace(' ', '')
-    int_num = Word(nums)
-    real_num = int_num + Optional('.' + int_num)
-    pm = Word("+-", max=1)
-    signed_real_num = Optional(pm + real_num)('num')
+    q_reg = r"([-+]?\d*\.\d+[\*ijk]*|[-+]?\d+[\*ijk]*)"
+    res = re.findall(q_reg, s.replace(' ', ''))
+    qs = [0] * 4
+    for r in res:
+        r = r.replace('*', '')
+        if 'i' in r:
+            r = r.replace('i', '')
+            qs[1] += float(r)
+        elif 'j' in r:
+            r = r.replace('j', '')
+            qs[2] += float(r)
+        elif 'k' in r:
+            r = r.replace('k', '')
+            qs[3] += float(r)
+        else:
+            qs[0] += float(r)
+    return qs
 
-    a = Optional(Optional(pm) + real_num)('a')
-    b = Optional(signed_real_num + '*i')('b')
-    c = Optional(signed_real_num + '*j')('c')
-    d = Optional(signed_real_num + '*k')('d')
-
-    expr = (a + b + c + d).parseString(s)
-    res = [
-        expr.get('a', ['0']),
-        expr.get('b', ['0', '*i'])[:-1],
-        expr.get('c', ['0', '*j'])[:-1],
-        expr.get('d', ['0', '*k'])[:-1]
-    ]
-    return [
-        float(''.join(x)) for x in res
-    ]
 
 def unparse_quaternion(q):
     return f'{q[0]} + {q[1]} i + {q[2]} j + {q[3]} k'
+
+
+def parse_group(G_str):
+    return [
+        parse_quaternion(q)
+        for q in G_str.split('\n')
+    ]

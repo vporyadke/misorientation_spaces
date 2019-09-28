@@ -38,11 +38,12 @@ def _make_plot(q1, q2, c=0):
     idxs = np.where(np.isclose(sigma, np.zeros(4)))[0]
     x = np.zeros(4)
     
-    for alpha in np.arange(0, 2 * np.pi, 0.1):
+    for alpha in np.arange(0.01, 2 * np.pi - 0.01, 0.1):
         x[idxs] = np.array([np.cos(alpha), np.sin(alpha)])
-        new_x = v_1 @ x
+        new_x = stereographic_proj(v_1 @ x)
 
-        res.append(stereographic_proj(new_x).tolist() + [c])
+        if np.all(np.abs(new_x) < 10):
+            res.append(new_x.tolist())
     res.append(res[0])
     return res
 
@@ -58,7 +59,6 @@ def make_plot(G1, G2):
                     'xs': cur_plot[:, 0].tolist(),
                     'ys': cur_plot[:, 1].tolist(),
                     'zs': cur_plot[:, 2].tolist(),
-                    'cs': cur_plot[:, 3].tolist(),
                     'name': unparse_quaternion(q_1) + '; ' + unparse_quaternion(q_2)
                 })
     return res
