@@ -20,7 +20,8 @@ def stereographic_proj(x):
     if np.allclose(x, [1, 0, 0, 0]):
         return [0, 0, 0]
     a, b, c, d = x
-    return 4 / ((a - 1)**2 + b**2 + c**2 + d**2) * np.array([b, c, d])
+    # return 4 / ((a - 1)**2 + b**2 + c**2 + d**2) * np.array([b, c, d])
+    return np.array([b, c, d]) / (1 - a)
 
 def _make_plot(q1, q2):
     mx = diff_mx(q1, q2)
