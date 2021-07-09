@@ -52,8 +52,13 @@ def _make_plot(q1, q2):
 
 def make_plot(G1, G2):
     res = []
+    used = set()
+    minus = lambda q : tuple(map(lambda x : -x, q))
     for i, q_1 in enumerate(G1):
         for j, q_2 in enumerate(G2):
+            if (minus(q_1), minus(q_2)) in used:
+                continue
+            used.add((tuple(q_1), tuple(q_2)))
             p = _make_plot(q_1, q_2)
             if p is not None:
                 cur_plot = np.array(p)

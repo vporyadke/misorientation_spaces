@@ -22,7 +22,8 @@ def parse_quaternion(s):
 
 
 def unparse_quaternion(q):
-    return f'{q[0]} + {q[1]} i + {q[2]} j + {q[3]} k'
+    symb = ['', 'i', 'j', 'k']
+    return ' + '.join([str(q[i]) + symb[i] for i in range(4) if q[i] != 0])
 
 
 def parse_group(G_str):
