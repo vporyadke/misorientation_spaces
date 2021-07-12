@@ -16,8 +16,8 @@ def index():
     return render_template('index.html', G1=G1, G2=G2, plots=plots)
 
 
-@app.route('/get_data', methods=['POST'])
-def get_data():
+@app.route('/get_so3', methods=['POST'])
+def get_so3():
     G1 = request.form['G1']
     G2 = request.form['G2']
     print(G1, G2)
@@ -27,6 +27,10 @@ def get_data():
             parse_group(G2)
         )
     )
+
+@app.route('/get_misorient', methods=['POST'])
+def get_misorient():
+    return json.dumps([])
 
 
 if __name__ == '__main__':

@@ -27,7 +27,10 @@
                     <label for="G2">Группа 2H</label>
                 </div>
                 <div class="input-field col s12">
-                    <a class="waves-effect waves-light btn" id="submit">Submit</a>
+                    <a class="waves-effect waves-light btn" id="submit1">Visualise in SO(3)</a>
+                </div>
+                <div class="input-field col s12">
+                    <a class="waves-effect waves-light btn" id="submit2">Visualise in the misorientation space</a>
                 </div>
             </div>
         </div>
@@ -41,10 +44,10 @@
     <script>
         PLOT = document.getElementById('plot');
 
-        function printData(G1, G2) {
+        function printData(G1, G2, query) {
             Plotly.purge(PLOT);
 
-            $.post( "get_data", { "G1": G1, "G2": G2 }).done(
+            $.post( query, { "G1": G1, "G2": G2 }).done(
                 (plots) => {
                     JSON.parse(plots).forEach((plot) => {
                         var xs = plot["xs"], ys = plot["ys"], zs = plot["zs"], name=plot["name"];
@@ -66,8 +69,11 @@
                 }
             );
         }
-        $( "#submit" ).click(function() {
-            printData($("#G1").val(), $("#G2").val());
+        $( "#submit1" ).click(function() {
+            printData($("#G1").val(), $("#G2").val(), "get_so3");
+        });
+        $( "#submit2" ).click(function() {
+            printData($("#G1").val(), $("#G2").val(), "get_misorient");
         });
 
         printData($("#G1").val(), $("#G2").val());
