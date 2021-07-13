@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import json
 
 from parse_quaternion import parse_group
-from compute_stab import make_plot
+from compute_stab import make_plot, misorient_proj
 import config
 
 app = Flask(__name__)
@@ -30,7 +30,16 @@ def get_so3():
 
 @app.route('/get_misorient', methods=['POST'])
 def get_misorient():
-    return json.dumps([])
+    G1 = request.form['G1']
+    G2 = request.form['G2']
+    print(G1, G2)
+    return json.dumps(
+        make_plot(
+            parse_group(G1), 
+            parse_group(G2),
+            misorient_proj
+        )
+    )
 
 
 if __name__ == '__main__':
